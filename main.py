@@ -38,16 +38,21 @@ for company, df in companies.items():
 n = []
 t = []
 delta_t = []
-n_to_companies = {}
 delta = (max_date-min_date).days
-for i in range(1000):
+
+npoints = 0
+while npoints < 1000:
     random_days_1 = random.randint(0, delta)
     random_date_1 = min_date + timedelta(days=random_days_1)
     random_days_2 = random.randint(0, delta-random_days_1)
     random_date_2 = random_date_1 + timedelta(days=random_days_2)
-    t.append(random_date_1)
-    delta_t.append(random_days_2)
-    n.append(len(dates[random_date_1].intersection(dates[random_date_2])))
+    
+    point = len(dates[random_date_1].intersection(dates[random_date_2]))
+    if point != 0:
+        t.append(random_date_1)
+        delta_t.append(random_days_2)
+        n.append(point)
+        npoints += 1
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')

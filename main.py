@@ -48,17 +48,20 @@ date_range = pd.date_range(start=min_date, end=max_date, freq='D')
 n = []
 t = []
 delta_t = []
+min_date = datetime.datetime(2005,3,1)
+max_date = datetime.datetime(2017,1,1)
 delta = (max_date-min_date).days
 
 npoints = 0
 while npoints < 1000:
-    print(npoints)
     random_days_1 = random.randint(0, delta)
     random_date_1 = min_date + timedelta(days=random_days_1)
     random_days_2 = random.randint(0, delta-random_days_1)
     random_date_2 = random_date_1 + timedelta(days=random_days_2)
-    
-    point = len(dates[random_date_1].intersection(dates[random_date_2]))
+
+    date_1 = random_date_1.strftime('%Y-%m-%d')
+    date_2 = random_date_2.strftime('%Y-%m-%d')
+    point = len(dates[date_1].intersection(dates[date_2]))
     if point != 0:
         t.append(random_date_1)
         delta_t.append(random_days_2)

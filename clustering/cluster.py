@@ -36,7 +36,7 @@ data, series = read_data()
 print(data.shape)
 
 # Single-linkage clustering
-eps = 200
+eps = 500
 metric = euclidean
 data_norm = standarize_data(data)
 labels = single_linkage_clustering(data, metric, eps)
@@ -47,7 +47,8 @@ for i, label in enumerate(labels):
     value = index_name = series.index[i]
     clusters[label].append(value)
 with open("sl_euclid.txt", "w") as sl:
-    sl.write(str(clusters))
+    for label, comps in clusters.items():
+        sl.write("Cluster: " + str(label) + ", companies: " + str(comps) + "\n")
 
 # TODO probar mes metriques (Dynamic Time Warping?) pero es n**2, hauriem de reduir les dades
 

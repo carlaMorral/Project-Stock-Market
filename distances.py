@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 
-with open("out.txt", "r") as f:
+with open("data.csv", "r") as f:
     stocks = f.readlines()
 stocks = set(map(lambda comp: comp[:-1], stocks))
 

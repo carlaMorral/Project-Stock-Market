@@ -6,7 +6,6 @@ from sklearn.cluster import KMeans, SpectralClustering
 from scipy.spatial import distance
 from collections import defaultdict
 import distance
-from plot import *
 from single_linkage import *
 
 
@@ -60,6 +59,8 @@ if __name__=="__main__":
     if len(sys.argv) > 2:
         metric = sys.argv[2]
     else: metric = "euclidean"
+    if method == "spectral":
+        metric = "rbf"
 
     try:
         labels = locals()[method](getattr(distance, metric))

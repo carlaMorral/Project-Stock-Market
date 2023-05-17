@@ -2,21 +2,21 @@ import sys
 import pandas as pd
 import numpy as np
 
+from sklearn.cluster import KMeans
+from scipy.spatial import distance
 from collections import defaultdict
 import distance
 from plot import *
 from single_linkage import *
 
 
+
 def standarize_data(data):
     """
     Computes Amplitude Scaling of the given time series
     """
-    # compute the row-wise mean and std
     mean = np.mean(data, axis=0, keepdims=True)
     std = np.std(data, axis=0, keepdims=True)
-
-    # subtract the mean and divide by the std
     data_norm = (data - mean) / std
     return data_norm
 
@@ -33,16 +33,24 @@ def read_data():
 
 data, series = read_data()
 
-# Single-linkage clustering
+
 def single_linkage(metric, eps=20):
     data_norm = standarize_data(data)
     labels = single_linkage_clustering(data_norm, metric, eps)
     return labels
 
 
+def kmeans(metric=None, k=4):
+    data_norm = standarize_data(data)
+    kmeans = KMeans(n_clusters=k, random_state=0, n_init="auto").fit(data_norm)
+    return kmeans.labels_
+
+
 if __name__=="__main__":
     method = sys.argv[1]
-    metric = sys.argv[2]
+    if len(sys.argv) > 2:
+        metric = sys.argv[2]
+    else: metric = "euclidean"
 
     labels = locals()[method](getattr(distance, metric))
     outfile = method + "_" + metric + ".txt"

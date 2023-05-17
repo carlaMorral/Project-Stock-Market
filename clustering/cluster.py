@@ -45,11 +45,9 @@ def kmeans(metric=None, k=20):
     return kmeans.labels_
 
 
-def spectral(metric=None, k=20):
-    if metric != None:
+def spectral(affinity, k=20):
+    if affinity == "nn":
         affinity = "nearest_neighbors"
-    else: affinity = "rbf"
-    
     clustering = SpectralClustering(n_clusters=k, affinity=affinity, assign_labels='discretize', random_state=0).fit(data)
     return clustering.labels_
 
@@ -58,9 +56,9 @@ if __name__=="__main__":
     method = sys.argv[1]
     if len(sys.argv) > 2:
         metric = sys.argv[2]
-    else: metric = "euclidean"
-    if method == "spectral":
-        metric = "rbf"
+    else: 
+        if method == "spectral": metric = "rbf"
+        else: metric = "euclidean"
 
     try:
         labels = locals()[method](getattr(distance, metric))

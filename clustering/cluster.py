@@ -2,7 +2,7 @@ import sys
 import pandas as pd
 import numpy as np
 
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, SpectralClustering
 from scipy.spatial import distance
 from collections import defaultdict
 import distance
@@ -40,10 +40,19 @@ def single_linkage(metric, eps=20):
     return labels
 
 
-def kmeans(metric=None, k=4):
+def kmeans(metric=None, k=20):
     data_norm = standarize_data(data)
-    kmeans = KMeans(n_clusters=k, random_state=0, n_init="auto").fit(data_norm)
+    kmeans = KMeans(n_clusters=k, random_state=0).fit(data_norm)
     return kmeans.labels_
+
+
+def spectral(metric=None, k=20):
+    if metric != None:
+        affinity = "nearest_neighbors"
+    else: affinity = "rbf"
+    
+    clustering = SpectralClustering(n_clusters=k, affinity=affinity, assign_labels='discretize', random_state=0).fit(data)
+    return clustering.labels_
 
 
 if __name__=="__main__":
@@ -52,7 +61,10 @@ if __name__=="__main__":
         metric = sys.argv[2]
     else: metric = "euclidean"
 
-    labels = locals()[method](getattr(distance, metric))
+    try:
+        labels = locals()[method](getattr(distance, metric))
+    except AttributeError:
+        labels = locals()[method](metric)
     outfile = method + "_" + metric + ".txt"
 
     clusters = defaultdict(list)
@@ -62,11 +74,5 @@ if __name__=="__main__":
     
     with open(outfile, "w") as sl:
         for label, comps in clusters.items():
-            sl.write("Cluster: " + str(label) + ", companies: " + str(comps) + "\n")
-
-# TODO probar mes metriques (Dynamic Time Warping?) pero es n**2, hauriem de reduir les dades
-
-
-# TODO spectral clustering
-
+            sl.write(str(comps) + "\n")
 

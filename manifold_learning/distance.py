@@ -1,11 +1,14 @@
 import numpy as np
 from dtaidistance import dtw
 from numpy import linalg as LA
+from scipy.spatial.distance import correlation
 
 
 def euclidean(xi, xj):
     return LA.norm(xj-xi)
 
+def correlation_distance(xi, xj):
+    return correlation(xi, xj)
 
 def dynamic_time_warping(xi, xj):
     return dtw.distance_fast(xi, xj, use_pruning=True)

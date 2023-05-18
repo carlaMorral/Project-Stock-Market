@@ -8,7 +8,7 @@ from sklearn.metrics import pairwise_distances
 from collections import defaultdict
 import distance
 from single_linkage import *
-
+import matplotlib.pyplot as plt
 
 
 def standarize_data(data):
@@ -67,6 +67,105 @@ def distortion(metric, embedding):
     return np.abs(dist1 - dist2).mean(), dist1.mean()
 
 if __name__=="__main__":
+    d = []
+    for i in range(1, 9):
+        metric = distance.euclidean
+        embedding = isomap(metric=metric, d=i)
+        d1, d0 = distortion(metric, embedding)
+        if len(d) == 0:
+            d.append(d0)
+        d.append(d1)
+    plt.title('Isomap embeddings with Euclidean distance')
+    plt.xlabel('dimensions')
+    plt.ylabel('distortion')
+    plt.plot(range(9),d)
+    plt.show()
+    
+    d = []
+    for i in range(1, 9):
+        metric = distance.correlation_distance
+        embedding = isomap(metric=metric, d=i)
+        d1, d0 = distortion(metric, embedding)
+        if len(d) == 0:
+            d.append(d0)
+        d.append(d1)
+    plt.title('Isomap embeddings with Pearson correlation distance')
+    plt.xlabel('dimensions')
+    plt.ylabel('distortion')
+    plt.plot(range(9),d)
+    plt.show()
+    
+    d = []
+    for i in range(1, 9):
+        metric = distance.euclidean
+        embedding = mds(metric=metric, d=i)
+        d1, d0 = distortion(metric, embedding)
+        if len(d) == 0:
+            d.append(d0)
+        d.append(d1)
+    plt.title('MDS embeddings with Euclidean distance')
+    plt.xlabel('dimensions')
+    plt.ylabel('distortion')
+    plt.plot(range(9),d)
+    plt.show()
+    
+    d = []
+    for i in range(1, 9):
+        metric = distance.correlation_distance
+        embedding = mds(metric=metric, d=i)
+        d1, d0 = distortion(metric, embedding)
+        if len(d) == 0:
+            d.append(d0)
+        d.append(d1)
+    plt.title('MDS embeddings with Pearson correlation distance')
+    plt.xlabel('dimensions')
+    plt.ylabel('distortion')
+    plt.plot(range(9),d)
+    plt.show()
+    
+    d = []
+    for i in range(1, 9):
+        metric = distance.euclidean
+        embedding = laplacian(metric=metric, d=i)
+        d1, d0 = distortion(metric, embedding)
+        if len(d) == 0:
+            d.append(d0)
+        d.append(d1)
+    plt.title('Laplacian eigenmap embeddings with Euclidean distance')
+    plt.xlabel('dimensions')
+    plt.ylabel('distortion')
+    plt.plot(range(9),d)
+    plt.show()
+    
+    d = []
+    for i in range(1, 9):
+        metric = distance.correlation_distance
+        embedding = laplacian(metric=metric, d=i)
+        d1, d0 = distortion(metric, embedding)
+        if len(d) == 0:
+            d.append(d0)
+        d.append(d1)
+    plt.title('Laplacian eigenmap embeddings with Pearson correlation distance')
+    plt.xlabel('dimensions')
+    plt.ylabel('distortion')
+    plt.plot(range(9),d)
+    plt.show()
+    
+    d = []
+    for i in range(1, 9):
+        metric = distance.euclidean
+        embedding = lle(metric=metric, d=i)
+        d1, d0 = distortion(metric, embedding)
+        if len(d) == 0:
+            d.append(d0)
+        d.append(d1)
+    plt.title('Locally linear embeddings')
+    plt.xlabel('dimensions')
+    plt.ylabel('distortion')
+    plt.plot(range(9),d)
+    plt.show()
+ 
+    """
     method = sys.argv[1]
     
     if method == "isomap":
@@ -83,11 +182,14 @@ if __name__=="__main__":
     if metric == "euclidean":
         df = distance.euclidean
     elif metric == "dynamic_time_warping":
-        df = dynamic_time_warping
+        df = distance.dynamic_time_warping
+    elif metric == "correlation":
+        df = distance.correlation_distance
     
     dim = int(sys.argv[3])
     
     embeddings = f(metric=df, d=dim)
     #print(embeddings)
     print(distortion(df, embeddings))
+    """
 

@@ -37,7 +37,7 @@ data, series = read_data()
 if __name__=="__main__":
     # 1D embedding
     """
-    metric = distance.euclidean
+    metric = distance.correlation_distance
     embedding = mds(metric=metric, d=1)
     data_norm = standarize_data(data)
     x_dim, y_dim = data_norm.shape
@@ -47,11 +47,12 @@ if __name__=="__main__":
     fig = plt.figure()
     ax = plt.axes(projection='3d')
     ax.scatter(manifold[:,0], manifold[:,1], manifold[:,2])
-    ax.set_xlim3d(left=-50, right=50)
+    #ax.set_xlim3d(left=-50, right=50)
     ax.set_zlim3d(bottom=-2, top=2)
     plt.show()
     """
     
+    # 2D embedding
     metric = distance.euclidean
     embedding = mds(metric=metric, d=2)
     data_norm = standarize_data(data)
@@ -68,6 +69,6 @@ if __name__=="__main__":
         ax.set_xlim3d(left=-50, right=50)
         ax.set_ylim3d(bottom=-50, top=150)
         ax.set_zlim3d(bottom=-2, top=2)
+        ax.view_init(elev=30, azim=-13)
         plt.show()
-
  
